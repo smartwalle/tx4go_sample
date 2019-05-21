@@ -72,7 +72,7 @@ func (this *S2) Call(ctx context.Context, req *s2pb.Req, rsp *s2pb.Rsp) error {
 	var ts = s1pb.NewS1Service("tx-s1", this.s.Client())
 	ts.Call(ctx, &s1pb.Req{})
 
-	tx.Rollback()
+	tx.Commit()
 
 	return nil
 }

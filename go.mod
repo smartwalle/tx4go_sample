@@ -9,7 +9,7 @@ require (
 	github.com/smartwalle/jaeger4go v1.0.0
 	github.com/smartwalle/log4go v1.0.0
 	github.com/smartwalle/pks v1.0.0
-	github.com/smartwalle/tx4go v0.0.3
+	github.com/smartwalle/tx4go v0.0.6
 	go.etcd.io/bbolt v1.3.2 // indirect
 	google.golang.org/grpc v1.20.1
 )
