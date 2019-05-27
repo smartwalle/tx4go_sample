@@ -40,6 +40,8 @@ func main() {
 		micro.Name("tx-s1"),
 		micro.WrapHandler(wo.NewHandlerWrapper()),
 		micro.WrapClient(wo.NewClientWrapper()),
+		micro.WrapHandler(tx4go.NewHandlerWrapper()),
+		micro.WrapCall(tx4go.NewCallWrapper()),
 	)
 
 	tx4go.SetLogger(nil)

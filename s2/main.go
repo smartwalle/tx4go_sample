@@ -41,6 +41,8 @@ func main() {
 		micro.Name("tx-s2"),
 		micro.WrapHandler(wo.NewHandlerWrapper()),
 		micro.WrapClient(wo.NewClientWrapper()),
+		micro.WrapHandler(tx4go.NewHandlerWrapper()),
+		micro.WrapCall(tx4go.NewCallWrapper()),
 	)
 
 	tx4go.SetLogger(nil)
@@ -72,7 +74,7 @@ func (this *S2) Call(ctx context.Context, req *s2pb.Req, rsp *s2pb.Rsp) error {
 	var ts = s1pb.NewS1Service("tx-s1", this.s.Client())
 	ts.Call(ctx, &s1pb.Req{})
 
-	tx.Commit()
+	tx.Rollback()
 
 	return nil
 }
