@@ -61,6 +61,10 @@ type S2 struct {
 func (this *S2) Call(ctx context.Context, req *s2pb.Req, rsp *s2pb.Rsp) error {
 	fmt.Println("s2 收到请求")
 
+	span, ctx := opentracing.StartSpanFromContext(ctx, "s2-call")
+	span.LogKV("s2-call-key", "s2-call-value")
+	span.Finish()
+
 	tx, ctx, err := tx4go.Begin(ctx, func() {
 		log4go.Println("confirm")
 	}, func() {

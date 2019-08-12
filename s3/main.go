@@ -51,7 +51,11 @@ func main() {
 	time.AfterFunc(time.Second*2, func() {
 		fmt.Println("向 s2 发起请求")
 
-		tx, ctx, err := tx4go.Begin(context.Background(), func() {
+		span, ctx := opentracing.StartSpanFromContext(context.Background(), "s3-call")
+		span.LogKV("s3-call-key", "s3-call-value")
+		span.Finish()
+
+		tx, ctx, err := tx4go.Begin(ctx, func() {
 			log4go.Println("confirm")
 		}, func() {
 			log4go.Errorln("cancel")
