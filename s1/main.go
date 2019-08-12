@@ -5,13 +5,14 @@ import (
 	"fmt"
 	"github.com/micro/go-micro"
 	"github.com/micro/go-micro/client"
+	grpc_client "github.com/micro/go-micro/client/grpc"
 	"github.com/micro/go-micro/server"
+	grpc_server "github.com/micro/go-micro/server/grpc"
 	"github.com/micro/go-plugins/registry/etcdv3"
 	wo "github.com/micro/go-plugins/wrapper/trace/opentracing"
+	"github.com/opentracing/opentracing-go"
 	"github.com/smartwalle/jaeger4go"
 	"github.com/smartwalle/log4go"
-	pks_client "github.com/smartwalle/pks/plugins/client/pks_grpc"
-	pks_server "github.com/smartwalle/pks/plugins/server/pks_grpc"
 	"github.com/smartwalle/tx4go"
 	"github.com/smartwalle/tx4go_sample/s1/s1pb"
 	"time"
@@ -32,14 +33,14 @@ func main() {
 	defer closer.Close()
 
 	var s = micro.NewService(
-		micro.Server(pks_server.NewServer(server.Address("192.168.1.99:8911"))),
-		micro.Client(pks_client.NewClient(client.PoolSize(10))),
+		micro.Server(grpc_server.NewServer(server.Address("192.168.1.99:8911"))),
+		micro.Client(grpc_client.NewClient(client.PoolSize(10))),
 		micro.RegisterTTL(time.Second*10),
 		micro.RegisterInterval(time.Second*5),
 		micro.Registry(etcdv3.NewRegistry()),
 		micro.Name("tx-s1"),
-		micro.WrapHandler(wo.NewHandlerWrapper()),
-		micro.WrapClient(wo.NewClientWrapper()),
+		micro.WrapHandler(wo.NewHandlerWrapper(opentracing.GlobalTracer())),
+		micro.WrapClient(wo.NewClientWrapper(opentracing.GlobalTracer())),
 		micro.WrapHandler(tx4go.NewHandlerWrapper()),
 		micro.WrapCall(tx4go.NewCallWrapper()),
 	)
