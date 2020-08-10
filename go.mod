@@ -55,3 +55,5 @@ replace github.com/testcontainers/testcontainer-go => github.com/testcontainers/
 replace github.com/golang/lint => github.com/golang/lint v0.0.0-20190227174305-8f45f776aaf1
 
 replace github.com/ugorji/go/codec => github.com/ugorji/go/codec v0.0.0-20181204163529-d75b2dcb6bc8
+
+replace github.com/gogo/protobuf => github.com/gogo/protobuf v1.3.0
